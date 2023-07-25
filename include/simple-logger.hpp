@@ -31,6 +31,8 @@ void set_log_to_file(bool save_to_file);
 
 void set_flush_on_log(bool flush);
 
+void set_log_time(bool time);
+
 void set_log_file_path(std::string path);
 
 void set_log_prefix(std::string prefix);

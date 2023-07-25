@@ -4,11 +4,14 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <chrono>
 
 // --- Config Static Vars ---
 
 static bool log_to_file = false;
 static bool flush_on_log = true;
+static bool log_time = true;
 static std::filesystem::path log_file_path = "./log.txt";
 static std::string log_prefix = "$";
 
@@ -23,6 +26,11 @@ void set_log_to_file(bool log_file)
 void set_flush_on_log(bool flush)
 {
 	flush_on_log = flush;
+}
+
+void set_log_time(bool time)
+{
+	log_time = time;
 }
 
 void set_log_file_path(std::string path)
@@ -43,7 +51,22 @@ void _log(LogLevel log_level, std::string parsed_message)
 
 	std::string level_strings[] = { "[FATAL]: ", "[ERROR]: ", "[WARN]: ", "[INFO]: ", "[DEBUG]: ", "[TRACE]: " };
 
-	std::string log = log_prefix + level_strings[int_log_level] + parsed_message;
+	std::string log = log_prefix;
+
+	if (log_time)
+	{
+		const std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
+
+		const std::time_t tt = std::chrono::system_clock::to_time_t(now);
+
+		std::stringstream ss;
+
+		ss << '[' << std::put_time(std::localtime(&tt), "%F %T") << ']';
+
+		log += ss.str();
+	}
+
+	log += level_strings[int_log_level] + parsed_message;
 
 	if (log_to_file)
 	{
