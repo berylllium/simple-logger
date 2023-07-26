@@ -18,9 +18,6 @@ enum class LogLevel
 	TRACE = 5
 };
 
-template<typename T>
-concept stringy = std::is_same<std::string, T>::value;
-
 // --- Internal Log Function ---
 
 void _log(LogLevel log_level, std::string parsed_message);
@@ -39,43 +36,43 @@ void set_log_prefix(std::string prefix);
 
 // --- Log Functions ---
 
-template<stringy... P>
+template<typename... P>
 void log(LogLevel log_level, std::string message, P... args)
 {
 	_log(log_level, std::vformat(message, std::make_format_args(args...)));
 }
 
-template<stringy... P>
+template<typename... P>
 void log_fatal(std::string message, P... args)
 {
 	log(LogLevel::FATAL, message, args...);
 }
 
-template<stringy... P>
+template<typename... P>
 void log_error(std::string message, P... args)
 {
 	log(LogLevel::ERROR, message, args...);
 }
 
-template<stringy... P>
+template<typename... P>
 void log_warn(std::string message, P... args)
 {
 	log(LogLevel::WARN, message, args...);
 }
 
-template<stringy... P>
+template<typename... P>
 void log_info(std::string message, P... args)
 {
 	log(LogLevel::INFO, message, args...);
 }
 
-template<stringy... P>
+template<typename... P>
 void log_debug(std::string message, P... args)
 {
 	log(LogLevel::DEBUG, message, args...);
 }
 
-template<stringy... P>
+template<typename... P>
 void log_trace(std::string message, P... args)
 {
 	log(LogLevel::TRACE, message, args...);

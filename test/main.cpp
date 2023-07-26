@@ -146,6 +146,9 @@ int main()
 
 		t4_durations[i] = td.count();
 	}
+	
+	// Print types.
+	sl::log_info("Testing integer {}", 12);
 
 	print_results(t1_durations, "Test #1: sl::log execution time. (No writing to file)");
 	print_results(t2_durations, "Test #2: sl::log execution time. (Writing to file)");
